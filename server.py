@@ -11,3 +11,5 @@ while True:
         today = date.today()
         today_str = today.strftime("%Y-%m-%d")
         socket.send_string(today_str)
+    if request.decode() == "test":
+        socket.send_string("It works!")
