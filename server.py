@@ -2,19 +2,21 @@ import zmq
 from datetime import date, datetime
 
 
-def calculate_time_difference(date_string):
-    """Receives a date as a string in the format YYYY-MM-DD and returns a string containing the difference
-    in time between the received date and the current datetime."""
-    # received_datetime = datetime.strptime(date_string, "%Y-%m-%d")
-    # status = None  # Can be either "overdue" or "remaining"
-    received_datetime = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
+def calculate_time_difference(datetime_string):
+    """Receives a datetime as a string in the format YYYY-MM-DD HH:MM:SS. Returns two values: a string of the difference in time
+    between the received datetime and the current datetime, and the status of the time difference: remaining or overdue."""
+    # Create datetime objects to prepare comparison
+    received_datetime = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S")
     current_datetime = datetime.now()
+
+    # Determine whether the received datetime lies in the past or future, and generate a timedelta object
     if received_datetime > current_datetime:
         status = "remaining"
         time_difference = received_datetime - current_datetime
     else:
         status = "overdue"
         time_difference = current_datetime - received_datetime
+
     display_string = generate_display_string(time_difference)
     return (display_string, status)
     
