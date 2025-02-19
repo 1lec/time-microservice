@@ -22,6 +22,7 @@ def calculate_time_difference(datetime_string):
     
 def generate_display_string(time_difference):
     """Receives a timedelta object and returns a human-readable version of the time difference in the form of a string."""
+    # From total number of seconds between the datetimes, calculate the number of years, weeks, days, hours, and minutes between
     total_seconds = int(time_difference.total_seconds())
     years = total_seconds // 31536000
     total_seconds = total_seconds % 31536000
@@ -32,8 +33,8 @@ def generate_display_string(time_difference):
     hours = total_seconds // 3600
     total_seconds = total_seconds % 3600
     minutes = total_seconds // 60
-    total_seconds = total_seconds % 60
 
+    # Using the information calculated above, return a human-readable string representing the time difference
     if years > 1:
         return f"{years} years"
     if years == 1:
@@ -60,10 +61,12 @@ def main():
         socket.bind("tcp://*:5559")
         request = socket.recv()
 
+        # Client requests the current date
         if request.decode() == "date":
             today = date.today()
             today_str = today.strftime("%Y-%m-%d")
             socket.send_string(today_str)
+        # Client sends a datetime and requests to calculate the difference between it and the current datetime
         else:
             time_difference, status = calculate_time_difference(request.decode())
             socket.send_multipart([time_difference.encode(), status.encode()])
