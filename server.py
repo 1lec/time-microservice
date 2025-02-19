@@ -22,32 +22,35 @@ def calculate_time_difference(datetime_string):
     
 def generate_display_string(time_difference):
     """Receives a timedelta object and returns a human-readable version of the time difference in the form of a string."""
-    days = time_difference.days
-    hours = time_difference.seconds // 3600
-    minutes = time_difference.seconds // 60
+    total_seconds = int(time_difference.total_seconds())
+    years = total_seconds // 31536000
+    total_seconds = total_seconds % 31536000
+    weeks = total_seconds // 604800
+    total_seconds = total_seconds % 604800
+    days = total_seconds // 86400
+    total_seconds = total_seconds % 86400
+    hours = total_seconds // 3600
+    total_seconds = total_seconds % 3600
+    minutes = total_seconds // 60
+    total_seconds = total_seconds % 60
 
-    if days >= 730:  # If time remaining is 2 or more years
-        return f"{days // 365} years"
-    elif days >= 365:
+    if years > 1:
+        return f"{years} years"
+    if years == 1:
         return "1 year"
-    elif days >= 14:
-        return f"{days // 7} weeks"
-    elif days >= 7:
+    if weeks > 1:
+        return f"{weeks} weeks"
+    if weeks == 1:
         return "1 week"
-    elif days > 1:
-        return f"{days} days, {hours} hour(s)"
-    elif days > 0:
+    if days > 1:
+        return f"{days} days"
+    if days == 1:
         return f"1 day, {hours} hour(s)"
-    elif hours > 1:
-        return f"{hours} hours"
-    elif hours > 0:
-        return "1 hour"
-    elif minutes > 1:
-        return f"{minutes} minutes"
-    elif minutes > 0:
-        return "1 minute"
-    else:
-        return f"{time_difference.seconds} seconds"
+    if hours > 1:
+        return f"{hours} hours, {minutes} minute(s)"
+    if hours == 1:
+        return f"1 hour, {minutes} minute(s)"
+    return "Less than 1 hour"
 
 
 def main():
