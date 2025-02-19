@@ -12,12 +12,13 @@ def main():
         first_choice = input("Enter 1 or 2: ")
         if first_choice == '1':
             socket.send_string("date")
+            response = socket.recv()
+            print(response.decode())
         if first_choice == '2':
             second_choice = input("Enter a date in YYYY-MM-DD format: ")
             socket.send_string(second_choice)
-
-        response = socket.recv()
-        print(response.decode())
+            response = socket.recv_multipart()
+            print(response)
 
 
 if __name__ == "__main__":

@@ -6,9 +6,20 @@ def calculate_time_difference(date_string):
     """Receives a date as a string in the format YYYY-MM-DD and returns a string containing the difference
     in time between the received date and the current datetime."""
     # received_datetime = datetime.strptime(date_string, "%Y-%m-%d")
+    # status = None  # Can be either "overdue" or "remaining"
     received_datetime = datetime.strptime(date_string, "%Y-%m-%d %H:%M:%S")
     current_datetime = datetime.now()
-    time_difference = received_datetime - current_datetime
+    if received_datetime > current_datetime:
+        status = "remaining"
+        time_difference = received_datetime - current_datetime
+    else:
+        status = "overdue"
+        time_difference = current_datetime - received_datetime
+    display_string = generate_display_string(time_difference)
+    return (display_string, status)
+    
+def generate_display_string(time_difference):
+    """Receives a timedelta object and returns a human-readable version of the time difference in the form of a string."""
     days = time_difference.days
     hours = time_difference.seconds // 3600
     minutes = time_difference.seconds // 60
@@ -49,8 +60,8 @@ def main():
             today_str = today.strftime("%Y-%m-%d")
             socket.send_string(today_str)
         else:
-            time_difference = calculate_time_difference(request.decode())
-            socket.send_string(time_difference)
+            time_difference, status = calculate_time_difference(request.decode())
+            socket.send_multipart([time_difference.encode(), status.encode()])
 
 
 if __name__ == "__main__":
