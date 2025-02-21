@@ -1,3 +1,6 @@
+# Time Microservice
+This microservice provides the current date, or if given a datetime, calculates the difference in time between the given datetime and the current datetime.
+
 # Requesting data from the time microservice
 To send a request to the microservice, the client must utilize the python module ZeroMQ. Below is an example of how to establish connection to the microservice:  
   
