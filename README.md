@@ -39,3 +39,6 @@ response = socket.recv_multipart()
 time_difference = response[0].decode()
 status = response[1].decode()
 ```
+
+# UML Diagram
+![](UML.png)
