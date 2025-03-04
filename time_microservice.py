@@ -65,12 +65,15 @@ def main():
         request = socket.recv()
         # Client requests the current date
         if request.decode() == "date":
+            print("Obtaining today's date...")
             today = date.today()
             today_str = today.strftime("%Y-%m-%d")
             socket.send_string(today_str)
         # Client sends a datetime and requests to calculate the difference between it and the current datetime
         else:
-            time_difference, status = calculate_time_difference(request.decode())
+            datetime_input = request.decode()
+            print(f"Calculating time difference between current datetime and {datetime_input}")
+            time_difference, status = calculate_time_difference(datetime_input)
             socket.send_multipart([time_difference.encode(), status.encode()])
 
 
