@@ -1,6 +1,7 @@
 import zmq
 from datetime import date, datetime
 
+ZMQ_PORT = '5559'
 
 def calculate_time_difference(datetime_string):
     """Receives a datetime as a string in the format YYYY-MM-DD HH:MM:SS. Returns two values: a string of the difference in time
@@ -55,12 +56,13 @@ def generate_display_string(time_difference):
 
 
 def main():
-    while True:
-        context = zmq.Context()
-        socket = context.socket(zmq.REP)
-        socket.bind("tcp://*:5559")
-        request = socket.recv()
+    context = zmq.Context()
+    socket = context.socket(zmq.REP)
+    socket.bind(f"tcp://*:{ZMQ_PORT}")
+    print(f"Time Microservice is running and is listening on port {ZMQ_PORT}...")
 
+    while True:
+        request = socket.recv()
         # Client requests the current date
         if request.decode() == "date":
             today = date.today()
